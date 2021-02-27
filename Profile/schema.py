@@ -4,7 +4,7 @@ import graphene
 from graphene.types.argument import Argument
 from graphene.types.mutation import Mutation
 from graphene_django import DjangoObjectType
-from .models import User
+from .models import User,PeriodTracker,Exercise
 from graphql import GraphQLError
 from django.db.models import Q
 
@@ -13,10 +13,16 @@ class Users(DjangoObjectType):
     class Meta:
         model = User
 
+class Period(DjangoObjectType):
+    class Meta:
+        model = PeriodTracker
+
 
 class Query(graphene.ObjectType):
     allUsers = graphene.List(Users, id=graphene.String(required=True))
     me = graphene.Field(Users)
+    getperiodinfo = graphene.List(Period)
+    getexerciseinfo = graphene.List(GetExercise)
 
     def resolve_allUsers(self, info, id):
         return User.objects.get(id=id)
@@ -24,6 +30,20 @@ class Query(graphene.ObjectType):
     def resolve_me(self, info):
         user = info.context.user
         return user
+
+    def resolve_getperiodinfo(self, info):
+        active = info.context.user
+        if active.is_anonymous:
+            raise GraphQLError("Not Logged In!")
+        return PeriodTracker.objects.filter(user=active).order_by("-added")
+
+    def resolve_getexerciseinfo(self, info):
+        active = info.context.user
+        if active.is_anonymous:
+            raise GraphQLError("Not Logged In!")
+        return Exercise.objects.filter(user=active).order_by("-added")
+
+        
 
 
 
@@ -88,6 +108,52 @@ class UpdateProfile(graphene.Mutation):
         myProfile.save()
 
         return UpdateProfile(profile=myProfile)
+
+class AddPeriodinfo(graphene.Mutation):
+    info = graphene.Field(Period)
+
+    class Arguments:
+        date = graphene.Int()
+        month = graphene.Int()
+        year = graphene.Int()
+
+
+    def mutate(self, info, **kwargs):
+        user = info.context.user
+        if user.is_anonymous:
+            raise GraphQLError("Not Logged In!")
+        period = PeriodTracker.objects.create(user=user)
+        period.date = kwargs.get("date")
+        period.month = kwargs.get("month")
+        period.year = kwargs.get("year")
+
+        period.save()
+
+        return AddPeriodinfo(info=period)
+
+class AddExercise(graphene.Mutation):
+    info = graphene.Field(GetExercise)
+
+    class Arguments:
+        date = graphene.Int()
+        month = graphene.Int()
+        year = graphene.Int()
+        exercise_type = graphene.String()
+
+
+    def mutate(self, info, **kwargs):
+        user = info.context.user
+        if user.is_anonymous:
+            raise GraphQLError("Not Logged In!")
+        exercise = Exercise.objects.create(user=user)
+        exercise.date = kwargs.get("date")
+        exercise.month = kwargs.get("month")
+        exercise.year = kwargs.get("year")
+        exercise.exercise_type = kwargs.get("exercise_type")
+
+        exercise.save()
+
+        return AddExercise(info=exercise)
 
 
 class Mutation(graphene.ObjectType):
