@@ -166,3 +166,5 @@ class AddExercise(graphene.Mutation):
 class Mutation(graphene.ObjectType):
     create_user = CreateUser.Field()
     update_profile = UpdateProfile.Field()
+    add_periodinfo = AddPeriodinfo.Field()
+    add_exercise = AddExercise()
