@@ -83,9 +83,9 @@ class Exercise(models.Model):
     exercise_type = models.CharField(
         max_length=1, choices=EXERCISE_CHOICES, blank=True, null=True
     )
-    date = models.IntegerField(blank=False, null=True)
-    month = models.IntegerField(blank=False, null=True)
-    year = models.IntegerField(blank=False, null=True)
+    # date = models.IntegerField(blank=False, null=True)
+    # month = models.IntegerField(blank=False, null=True)
+    # year = models.IntegerField(blank=False, null=True)
     added = models.DateTimeField(auto_now_add=True,unique=True)
 
     def __str__(self):
