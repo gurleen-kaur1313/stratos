@@ -53,6 +53,7 @@ class CreateUser(graphene.Mutation):
         nuser.Height = kwargs.get("height")
         nuser.Weight = kwargs.get("weight")
         nuser.Gender = kwargs.get("gender")
+        nuser.BMI = nuser.Weight/(nuser.Height*nuser.Height)
         nuser.save()
 
         return CreateUser(user=nuser)
@@ -71,7 +72,7 @@ class UpdateProfile(graphene.Mutation):
         weight = graphene.Int()
         gender = graphene.String()
 
-    def mutate(self, info, **kwargs):
+    def mutate(self, info,id, **kwargs):
         myProfile = User.objects.get(id=id)
         if myProfile.is_anonymous:
             raise GraphQLError("Not Logged In!")
@@ -83,6 +84,7 @@ class UpdateProfile(graphene.Mutation):
         myProfile.Height = kwargs.get("height")
         myProfile.Weight = kwargs.get("weight")
         myProfile.Gender = kwargs.get("gender")
+        myProfile.BMI = myProfile.Weight/(myProfile.Height*myProfile.Height)
         myProfile.save()
 
         return UpdateProfile(profile=myProfile)

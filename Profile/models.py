@@ -80,3 +80,20 @@ class Exercise(models.Model):
 
     def save(self, *args, **kwargs):
         super(Exercise, self).save(*args, **kwargs)
+
+
+#model for period-tracking
+
+class PeriodTracker(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
+    date = models.IntegerField(blank=False, null=True)
+    month = models.IntegerField(blank=False, null=True)
+    year = models.IntegerField(blank=False, null=True)
+    added = models.DateTimeField(auto_now_add=True,unique=True)
+
+    def __str__(self):
+        return self.user.email
+
+    def save(self, *args, **kwargs):
+        super(PeriodTracker, self).save(*args, **kwargs)
