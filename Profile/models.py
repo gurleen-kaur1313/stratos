@@ -18,7 +18,7 @@ class UserProfileManager(BaseUserManager):
 
     def create_superuser(self, email, password, is_staff=True):
         User = self.create_user(email, password)
-        User.is_doctor = True
+        User.is_staff = True
         User.is_superuser = True
         User.save()
         return User
@@ -28,27 +28,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.CharField(max_length=200, unique=True)
     is_active = models.BooleanField(default=True)
-    is_doctor = models.BooleanField(default=False)
-
-    objects = UserProfileManager()
-    USERNAME_FIELD = 'email'
-
-    def __str__(self):
-        return self.email
-
-    def GET_Email(self):
-        return self.email
-
-#User-Profile model
-
-class Profile(models.Model):
+    is_staff = models.BooleanField(default=False)
     GENDER_CHOICES = (
         ("M", "Male"),
         ("F", "Female"),
         ("O", "Others"),
     )
-    user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(blank=True,null=True, max_length=250)
     mobile = models.CharField(blank=True, null=True,max_length=16)
     state = models.TextField(blank=True,null=True, help_text="State : ")
@@ -62,12 +47,14 @@ class Profile(models.Model):
     Gender = models.CharField(
         max_length=1, choices=GENDER_CHOICES, blank=True, null=True
     )
+    BMI = models.IntegerField(blank=True, null=True)
+
+    objects = UserProfileManager()
+    USERNAME_FIELD = 'email'
 
     def __str__(self):
-        return self.user.email
+        return self.email
 
-    def save(self, *args, **kwargs):
-        super(Profile, self).save(*args, **kwargs)
 
 
 #model for exercise
