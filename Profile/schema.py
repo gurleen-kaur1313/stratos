@@ -17,6 +17,10 @@ class Period(DjangoObjectType):
     class Meta:
         model = PeriodTracker
 
+class GetExercise(DjangoObjectType):
+    class Meta:
+        model = Exercise
+
 
 class Query(graphene.ObjectType):
     allUsers = graphene.List(Users, id=graphene.String(required=True))
@@ -83,6 +87,7 @@ class UpdateProfile(graphene.Mutation):
     profile = graphene.Field(Users)
 
     class Arguments:
+        email = graphene.String()
         name = graphene.String()
         mobile = graphene.String()
         state = graphene.String()
@@ -92,8 +97,8 @@ class UpdateProfile(graphene.Mutation):
         weight = graphene.Int()
         gender = graphene.String()
 
-    def mutate(self, info,id, **kwargs):
-        myProfile = User.objects.get(id=id)
+    def mutate(self, info, **kwargs):
+        myProfile = info.context.user
         if myProfile.is_anonymous:
             raise GraphQLError("Not Logged In!")
         myProfile.name = kwargs.get("name")
@@ -103,8 +108,10 @@ class UpdateProfile(graphene.Mutation):
         myProfile.Age = kwargs.get("age")
         myProfile.Height = kwargs.get("height")
         myProfile.Weight = kwargs.get("weight")
+        A = kwargs.get("height")
+        B = kwargs.get("weight")
         myProfile.Gender = kwargs.get("gender")
-        myProfile.BMI = myProfile.Weight/(myProfile.Height*myProfile.Height)
+        myProfile.BMI = B/(A*A)
         myProfile.save()
 
         return UpdateProfile(profile=myProfile)
