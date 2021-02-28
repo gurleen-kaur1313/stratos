@@ -56,17 +56,6 @@ tbody tr {
     width: 350px;
 }
 
-
-/* 
-@media(max-width:769px) {
-    section {
-        flex-direction: column;
-    }
-    .cards {
-        margin: 0%;
-    }
-} */
-
 @media(max-width:770px) {
     .table td,
     .table th {
