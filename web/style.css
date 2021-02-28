@@ -1,0 +1,78 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background-image: url("https://image.freepik.com/free-vector/white-abstract-background_23-2148810113.jpg");
+    background-size: cover;
+    /* background-position: center; */
+    background-repeat: no-repeat;
+}
+
+nav a {
+    font-family: 'Oi', cursive;
+}
+
+section {
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+    padding: 1% 2%;
+}
+
+.table {
+    /* width: 70vw; */
+    font-size: 1.3rem;
+}
+
+tbody tr {
+    background-color: rgb(247, 244, 244);
+}
+
+.cards {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: space-around; */
+    margin: 3%;
+}
+
+.car {
+    text-align: center;
+    font-size: 1.3rem;
+    border: 1px solid gainsboro;
+    padding-bottom: 6%;
+    margin-top: 3%;
+    background-color: #fdfdfd;
+}
+
+.car .btn {
+    width: 100px;
+    font-size: 1.3rem;
+}
+
+.cards .car img {
+    height: 300px;
+    width: 350px;
+}
+
+
+/* 
+@media(max-width:769px) {
+    section {
+        flex-direction: column;
+    }
+    .cards {
+        margin: 0%;
+    }
+} */
+
+@media(max-width:770px) {
+    .table td,
+    .table th {
+        font-size: 0.8rem;
+    }
+    .btn {
+        padding: 0.3rem .5rem;
+    }
+}
