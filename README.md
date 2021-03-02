@@ -15,5 +15,5 @@ During the lockdown, most of us became unhealthy by sitting in front of screens 
 
 ## Links
 #### Flutter app : https://github.com/Harmanjit14/Stratos
-[![Watch the video](https://i.imgur.com/vKb2F1B.png)](https://www.youtube.com/watch?v=eyGkHyB9YPA&t=31s)
+[![Watch the video](https://i.imgur.com/vKb2F1B.png)](https://www.youtube.com/watch?v=eyGkHyB9YPA&t=0s)
 <br> </br>
